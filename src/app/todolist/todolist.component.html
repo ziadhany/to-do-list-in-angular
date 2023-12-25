@@ -1,7 +1,11 @@
-<div class="container">
-
-    <h1>To-Do Application</h1>
-
+<nav class="navbar navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <h1>ToDo app</h1>
+    </a>
+  </div>
+</nav>
+<div class="container shadow-lg p-3 mb-5 bg-body rounded mt-5">
     <hr>
     <form (ngSubmit)="onSubmit(taskForm)" #taskForm="ngForm">
         <div class="form-group">
@@ -11,24 +15,27 @@
                 field</small>
         </div>
 
-        <button [disabled]="taskForm.invalid" id="submitButton" type="submit" class="btn btn-primary">Submit</button>
+        <button [disabled]="taskForm.invalid" id="submitButton" type="submit" class="btn btn-success">Submit</button>
     </form>
 
     <hr>
 
-    <table class="table">
+    <table class="table table-striped" >
         <thead>
             <tr>
-                <th scope="col">Task</th>
-                <th scope="col">Completed</th>
-                <th scope="col">Delete</th>
+              <th scope="col" class="border border-4">Status</th>
+              <th scope="col" class="border border-4">Task</th>
+              <th scope="col" class="border border-4">Delete</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let t of taskArray; index as i">
-                <td>{{t.taskName}}</td>
-                <td><input (change)="onCheck(i)" id="myCheckbox" type="checkbox"></td>
-                <td><button class="btn btn-danger btn-sm" (click)="onDelete(i)">Delete</button></td>
+            <tr *ngFor="let t of taskArray;">
+
+              <div *ngIf="t.completed; then thenBlock else elseBlock"></div>
+              <ng-template #thenBlock><td class="col-1"><input (change)="onCheck(t.id,t.task)" id="myCheckbox" type="checkbox" checked >✅</td></ng-template>
+              <ng-template #elseBlock><td class="col-1"><input (change)="onCheck(t.id,t.task)" id="myCheckbox" type="checkbox" >⏳</td></ng-template>
+              <td class="col-3"><p>{{t.task}}</p></td>
+                <td class="col-1"><button class="btn btn-warning btn-sm" (click)="onDelete(t.id)">Delete</button></td>
             </tr>
 
         </tbody>
